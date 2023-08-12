@@ -6,8 +6,6 @@ import com.example.propertiesinformationcollector.model.Services;
 import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.property.PropertyUtil;
 import com.example.propertiesinformationcollector.service.PropertiesService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -29,23 +27,21 @@ public class PropertiesServiceImpl implements PropertiesService {
 		Task task = Task.builder()
 			.uuid(uuid)
 			.statusTask(StatusTask.IN_PROGRESS)
-			.properties(startTask(services))
+			.properties(startTask(services, uuid))
 			.build();
 		taskMap.put(uuid, task);
 		return uuid;
 	}
 
 	@Async
-	protected CompletableFuture<Properties> startTask(Services services) {
+	protected CompletableFuture<Properties> startTask(Services services, UUID uuid) {
 		Properties results = PropertyUtil.getProperties(services);
-		return CompletableFuture.completedFuture(results);
+        taskMap.get(uuid).setStatusTask(StatusTask.SUCCESS);
+        return CompletableFuture.completedFuture(results);
 	}
 
 	@Override
 	public StatusTask getStatus(UUID uuid) {
-		if (taskMap.get(uuid).getProperties().isDone()) {
-			taskMap.get(uuid).setStatusTask(StatusTask.SUCCESS);
-		}
 		return taskMap.get(uuid).getStatusTask();
 	}
 
