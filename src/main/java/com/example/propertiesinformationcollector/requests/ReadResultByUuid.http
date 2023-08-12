@@ -1,0 +1,2 @@
+### Получить результат задачи по uuid
+GET http://localhost:8080/services/result?uuid=

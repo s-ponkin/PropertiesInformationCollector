@@ -1,0 +1,24 @@
+{
+  "services": [
+    {
+      "name" : "backend-service",
+      "path" : "C:\\Users\\serge\\IdeaProjects\\PropertiesInformationCollector\\src\\main\\resources\\properties\\backend-service\\application.properties"
+    },
+    {
+      "name" : "database-service",
+      "path" : "C:\\Users\\serge\\IdeaProjects\\PropertiesInformationCollector\\src\\main\\resources\\properties\\database-service\\application.properties"
+    },
+    {
+      "name" : "auth-service",
+      "path" : "C:\\Users\\serge\\IdeaProjects\\PropertiesInformationCollector\\src\\main\\resources\\properties\\auth-service\\application.properties"
+    },
+    {
+      "name" : "authz-service",
+      "path" : "C:\\Users\\serge\\IdeaProjects\\PropertiesInformationCollector\\src\\main\\resources\\properties\\authz-service\\application.properties"
+    }
+  ],
+  "ignorePropertiesList" : [
+    "server.port",
+    "server.servlet.context-path"
+  ]
+}

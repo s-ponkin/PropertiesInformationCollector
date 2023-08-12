@@ -1,0 +1,25 @@
+{
+  "properties" : [
+    {
+      "name" : "poib.log.cef.app-name",
+      "servicesValue" : [
+        {
+          "description" : "#\n# [ Logging properties ]\n#",
+          "service" : "authz-service",
+          "value" : "${app.name}"
+        },
+        {
+          "description" : "#\n# [ Logging properties ]\n#",
+          "service" : "backend-service",
+          "value" : "${app.name}"
+        },
+        {
+          "description" : "#\n# [ Logging properties ]\n#",
+          "service" : "auth-service",
+          "value" : "${app.name}"
+        }
+      ],
+      "allValuesEqual" : true
+    }
+  ]
+}
