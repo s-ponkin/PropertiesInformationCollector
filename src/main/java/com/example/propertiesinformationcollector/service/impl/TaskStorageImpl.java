@@ -5,6 +5,8 @@ import com.example.propertiesinformationcollector.model.Properties;
 import com.example.propertiesinformationcollector.model.Services;
 import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.service.TaskStorage;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,10 +17,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
+@EnableScheduling
 public class TaskStorageImpl implements TaskStorage {
 
 	public static final Map<UUID, Task> taskMap = new HashMap<>();
 	private static final Logger logger = Logger.getLogger(TaskStorageImpl.class.getName());
+	private static final PropertiesServiceImpl propertiesService = new PropertiesServiceImpl();;
 
 	@Override
 	public UUID create(Services services) {
@@ -48,5 +52,23 @@ public class TaskStorageImpl implements TaskStorage {
 			logger.log(Level.WARNING, e.getMessage());
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Scheduled(fixedRate = 5000)
+	public void startingProcess() {
+		taskMap.forEach((key, value) -> {
+			if (taskMap.get(key).getStatusTask() == StatusTask.IN_PROGRESS) {
+				taskMap.get(key).setProperties(propertiesService.create(value.getServices()));
+			}
+		});
+	}
+
+	@Scheduled(fixedRate = 5000)
+	public void changeStatus() {
+		taskMap.forEach((key, value) -> {
+			if (taskMap.get(key).getProperties().isDone()) {
+				taskMap.get(key).setStatusTask(StatusTask.SUCCESS);
+			}
+		});
 	}
 }
