@@ -8,10 +8,10 @@ import java.util.concurrent.CompletableFuture;
 public interface PropertiesService {
 
 	/**
-	 * Создает задачу для получение списка настроек и вернуть идентификатор задачи
+	 * Выполняет получение списка настроек
 	 *
 	 * @param services сервисы с информацией о настройках
-	 *                 * @return результат выполнения задачи
+	 * @return результат выполнения задачи
 	 */
 	CompletableFuture<Properties> create(Services services);
 }
