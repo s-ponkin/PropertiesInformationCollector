@@ -1,2 +1,2 @@
 ### Получить статус задачи по uuid
-GET http://localhost:8080/services/status?uuid=c703d523-b009-41bc-83ff-b87011d5d94c
+GET http://localhost:8080/task/status?uuid=

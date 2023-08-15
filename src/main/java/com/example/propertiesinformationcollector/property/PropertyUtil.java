@@ -24,12 +24,6 @@ public class PropertyUtil {
 	 * @return объект Properties
 	 */
 	public static Properties getProperties(Services services) {
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
 		initialServices(services);
 		List<Map<String, ServicesValue>> mapsProperties = getMapsProperties();
 		Set<String> propertiesSet = getPropertiesSet(mapsProperties);

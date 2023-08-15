@@ -22,6 +22,11 @@ public class Task {
 	private StatusTask statusTask;
 
 	/**
+	 * Информация о сервисах задачи
+	 */
+	private Services services;
+
+	/**
 	 * Результат работы программы
 	 */
 	private CompletableFuture<Properties> properties;
