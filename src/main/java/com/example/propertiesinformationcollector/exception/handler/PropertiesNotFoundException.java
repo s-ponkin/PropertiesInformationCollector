@@ -9,6 +9,6 @@ public class PropertiesNotFoundException extends RuntimeException {
 	}
 
 	public static PropertiesNotFoundException byUuid(UUID uuid) {
-		return new PropertiesNotFoundException(String.format("Not found by id: %s", uuid));
+		return new PropertiesNotFoundException(String.format("Not found by uuid: %s", uuid));
 	}
 }
