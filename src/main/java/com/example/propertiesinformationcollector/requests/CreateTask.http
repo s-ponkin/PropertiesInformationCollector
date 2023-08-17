@@ -1,5 +1,5 @@
 ### Создаёт задачу
-POST http://localhost:8080/task/add
+POST http://localhost:8080/task
 Content-Type: application/json
 
 {

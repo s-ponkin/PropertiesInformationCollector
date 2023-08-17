@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
 @Data
 @Builder
 public class Task {
@@ -29,5 +27,5 @@ public class Task {
 	/**
 	 * Результат работы программы
 	 */
-	private CompletableFuture<Properties> properties;
+	private Properties properties;
 }

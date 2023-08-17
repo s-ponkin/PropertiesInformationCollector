@@ -3,6 +3,7 @@ package com.example.propertiesinformationcollector.controller;
 import com.example.propertiesinformationcollector.enumStatus.StatusTask;
 import com.example.propertiesinformationcollector.model.Properties;
 import com.example.propertiesinformationcollector.model.Services;
+import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.service.TaskStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,27 +14,28 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-public class PropertiesController {
+@RequestMapping("task")
+public class TaskController {
 
 	private final TaskStorage taskStorage;
 
-	@PostMapping(value = "/task/add")
+	@PostMapping
 	public ResponseEntity<?> createTask(@RequestBody Services services) {
-		UUID uuid = taskStorage.create(services);
-		return new ResponseEntity<>(uuid, HttpStatus.OK);
+		Task task = taskStorage.create(services);
+		return new ResponseEntity<>(task.getUuid(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/task/status")
+	@GetMapping(value = "status")
 	public ResponseEntity<StatusTask> readStatus(@RequestParam("uuid") UUID uuid) {
-		StatusTask statusTask = taskStorage.getStatus(uuid);
-		return new ResponseEntity<>(statusTask, HttpStatus.OK);
+		Task task = taskStorage.read(uuid);
+		return new ResponseEntity<>(task.getStatusTask(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/task/result")
+	@GetMapping(value = "result")
 	public ResponseEntity<Properties> readResult(@RequestParam("uuid") UUID uuid) {
-		Properties properties = taskStorage.getResult(uuid);
-		return properties != null
-			? new ResponseEntity<>(properties, HttpStatus.OK)
+		Task task = taskStorage.read(uuid);
+		return task.getStatusTask() == StatusTask.SUCCESS
+			? new ResponseEntity<>(task.getProperties(), HttpStatus.OK)
 			: new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

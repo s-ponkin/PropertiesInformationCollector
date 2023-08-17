@@ -1,8 +1,8 @@
 package com.example.propertiesinformationcollector.service;
 
-import com.example.propertiesinformationcollector.enumStatus.StatusTask;
 import com.example.propertiesinformationcollector.model.Properties;
 import com.example.propertiesinformationcollector.model.Services;
+import com.example.propertiesinformationcollector.model.Task;
 
 import java.util.UUID;
 
@@ -15,23 +15,35 @@ public interface TaskStorage {
 	 *
 	 * @return идентификатор задачи
 	 */
-	UUID create(Services services);
+	Task create(Services services);
 
 	/**
-	 * Получить статус выполнения задачи по идентификатору задачи uuid
+	 * Получить задачу по uuid
 	 *
 	 * @param uuid uuid задачи
 	 *
-	 * @return статус выполнения задачи
+	 * @return Задача
 	 */
-	StatusTask getStatus(UUID uuid);
+	Task read(UUID uuid);
 
 	/**
-	 * Получить результат выполнения задачи по идентификатору задачи uuid
+	 * Обновить Properties задачи по uuid
 	 *
 	 * @param uuid uuid задачи
 	 *
-	 * @return результат выполнения задачи
+	 * @return Обновлённая задача
 	 */
-	Properties getResult(UUID uuid);
+	Task update(UUID uuid, Properties properties);
+
+	/**
+	 * Удалить задачу по uuid
+	 *
+	 * @param uuid uuid задачи
+	 */
+	void delete(UUID uuid);
+
+	/**
+	 * Получить задачу, которую нужно выполнить
+	 */
+	Task getObjectInProgress();
 }

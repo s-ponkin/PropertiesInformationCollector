@@ -1,31 +1,26 @@
 package com.example.propertiesinformationcollector.service.impl;
 
 import com.example.propertiesinformationcollector.enumStatus.StatusTask;
+import com.example.propertiesinformationcollector.exception.handler.PropertiesNotFoundException;
 import com.example.propertiesinformationcollector.model.Properties;
 import com.example.propertiesinformationcollector.model.Services;
 import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.service.TaskStorage;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 @EnableScheduling
 public class TaskStorageImpl implements TaskStorage {
 
 	public static final Map<UUID, Task> taskMap = new HashMap<>();
-	private static final Logger logger = Logger.getLogger(TaskStorageImpl.class.getName());
-	private static final PropertiesServiceImpl propertiesService = new PropertiesServiceImpl();;
 
 	@Override
-	public UUID create(Services services) {
+	public Task create(Services services) {
 		UUID uuid = UUID.randomUUID();
 		Task task = Task.builder()
 			.uuid(uuid)
@@ -33,42 +28,43 @@ public class TaskStorageImpl implements TaskStorage {
 			.services(services)
 			.build();
 		taskMap.put(uuid, task);
-		return uuid;
+		return task;
 	}
 
 	@Override
-	public StatusTask getStatus(UUID uuid) {
-		return taskMap.get(uuid).getStatusTask();
+	public Task read(UUID uuid) {
+		if(!taskMap.containsKey(uuid)){
+			throw PropertiesNotFoundException.byUuid(uuid);
+		}
+		return taskMap.get(uuid);
 	}
 
 	@Override
-	public Properties getResult(UUID uuid) {
-		if (taskMap.get(uuid).getStatusTask() == StatusTask.IN_PROGRESS) {
-			return null;
+	public Task update(UUID uuid, Properties properties) {
+		if(!taskMap.containsKey(uuid)){
+			throw PropertiesNotFoundException.byUuid(uuid);
 		}
-		try {
-			return taskMap.get(uuid).getProperties().get();
-		} catch (InterruptedException | ExecutionException e) {
-			logger.log(Level.WARNING, e.getMessage());
-			throw new RuntimeException(e);
-		}
+		Task task = Task.builder()
+				.uuid(uuid)
+				.statusTask(StatusTask.SUCCESS)
+				.properties(properties)
+				.build();
+		taskMap.put(uuid, task);
+		return task;
 	}
 
-	@Scheduled(fixedRate = 5000)
-	public void startingProcess() {
-		taskMap.forEach((key, value) -> {
-			if (taskMap.get(key).getStatusTask() == StatusTask.IN_PROGRESS) {
-				taskMap.get(key).setProperties(propertiesService.create(value.getServices()));
-			}
-		});
+	@Override
+	public void delete(UUID uuid) {
+		taskMap.remove(uuid);
 	}
 
-	@Scheduled(fixedRate = 5000)
-	public void changeStatus() {
-		taskMap.forEach((key, value) -> {
-			if (taskMap.get(key).getProperties().isDone()) {
-				taskMap.get(key).setStatusTask(StatusTask.SUCCESS);
+	@Override
+	public synchronized Task getObjectInProgress(){
+		for (Task task : taskMap.values()) {
+			if(task.getStatusTask() == StatusTask.IN_PROGRESS){
+				return task;
 			}
-		});
+		}
+		return null;
 	}
 }
