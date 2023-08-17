@@ -17,7 +17,6 @@ public class PropertyUtil {
 	private static List<String> IGNORE_PROPERTIES_LIST;
 	private static final Logger logger = Logger.getLogger(PropertyUtil.class.getName());
 
-
 	/**
 	 * Преобразует объект Services в объект Properties
 	 * @param services объект Services
