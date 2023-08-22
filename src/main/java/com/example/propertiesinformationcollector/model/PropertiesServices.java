@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class Properties {
+public class PropertiesServices {
 
 	/**
 	 * Список всех property

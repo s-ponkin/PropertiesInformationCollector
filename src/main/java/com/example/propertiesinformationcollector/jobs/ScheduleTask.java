@@ -1,9 +1,8 @@
 package com.example.propertiesinformationcollector.jobs;
 
-import com.example.propertiesinformationcollector.enumStatus.StatusTask;
-import com.example.propertiesinformationcollector.model.Properties;
+import com.example.propertiesinformationcollector.model.PropertiesServices;
 import com.example.propertiesinformationcollector.model.Task;
-import com.example.propertiesinformationcollector.property.PropertyUtil;
+import com.example.propertiesinformationcollector.service.PropertiesService;
 import com.example.propertiesinformationcollector.service.TaskStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -22,15 +21,15 @@ import org.springframework.stereotype.Component;
 public class ScheduleTask {
 
 	private final TaskStorage taskStorage;
+	private final PropertiesService propertiesService;
 
 	@Async
 	@Scheduled(fixedRate = 5000)
 	public void startingProcessAsync() {
-		Task task = taskStorage.getObjectInProgress();
+		Task task = taskStorage.findFirstTaskInProgress();
 		if (task != null) {
-			Properties properties = PropertyUtil.getProperties(task.getServices());
-			task.setProperties(properties);
-			task.setStatusTask(StatusTask.SUCCESS);
+			PropertiesServices propertiesServices = propertiesService.getPropertiesServices(task.getServices());
+			taskStorage.updateByUuid(task.getUuid(),propertiesServices);
 		}
 	}
 }

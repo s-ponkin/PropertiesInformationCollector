@@ -4,6 +4,7 @@ import com.example.propertiesinformationcollector.enumStatus.StatusTask;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.UUID;
 @Data
 @Builder
@@ -27,5 +28,10 @@ public class Task {
 	/**
 	 * Результат работы программы
 	 */
-	private Properties properties;
+	private PropertiesServices propertiesServices;
+
+	/**
+	 * Дата создания задачи
+	 */
+	private Date dateOfCreation;
 }

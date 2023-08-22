@@ -7,8 +7,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(PropertiesNotFoundException.class)
-	protected ErrorBody handleProductNotFoundException(PropertiesNotFoundException exception) {
+	@ExceptionHandler(TaskNotFoundException.class)
+	protected ErrorBody handleProductNotFoundException(TaskNotFoundException exception) {
 		return new ErrorBody(exception.getMessage());
 	}
 }

@@ -1,7 +1,7 @@
 package com.example.propertiesinformationcollector.controller;
 
 import com.example.propertiesinformationcollector.enumStatus.StatusTask;
-import com.example.propertiesinformationcollector.model.Properties;
+import com.example.propertiesinformationcollector.model.PropertiesServices;
 import com.example.propertiesinformationcollector.model.Services;
 import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.service.TaskStorage;
@@ -20,22 +20,24 @@ public class TaskController {
 	private final TaskStorage taskStorage;
 
 	@PostMapping
-	public ResponseEntity<?> createTask(@RequestBody Services services) {
+	public UUID createTask(@RequestBody Services services) {
 		Task task = taskStorage.create(services);
-		return new ResponseEntity<>(task.getUuid(), HttpStatus.OK);
+		return task.getUuid();
 	}
 
 	@GetMapping(value = "status")
-	public ResponseEntity<StatusTask> readStatus(@RequestParam("uuid") UUID uuid) {
-		Task task = taskStorage.read(uuid);
-		return new ResponseEntity<>(task.getStatusTask(), HttpStatus.OK);
+	public StatusTask readStatus(@RequestParam("uuid") UUID uuid) {
+		Task task = taskStorage.getByUuid(uuid);
+		return task.getStatusTask();
 	}
 
 	@GetMapping(value = "result")
-	public ResponseEntity<Properties> readResult(@RequestParam("uuid") UUID uuid) {
-		Task task = taskStorage.read(uuid);
-		return task.getStatusTask() == StatusTask.SUCCESS
-			? new ResponseEntity<>(task.getProperties(), HttpStatus.OK)
-			: new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	@ResponseBody
+	public PropertiesServices readResult(@RequestParam("uuid") UUID uuid) {
+		Task task = taskStorage.getByUuid(uuid);
+		if(task.getStatusTask() == StatusTask.IN_PROGRESS){
+			new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return task.getPropertiesServices();
 	}
 }

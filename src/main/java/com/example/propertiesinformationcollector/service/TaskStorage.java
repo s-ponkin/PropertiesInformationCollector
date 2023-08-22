@@ -1,6 +1,6 @@
 package com.example.propertiesinformationcollector.service;
 
-import com.example.propertiesinformationcollector.model.Properties;
+import com.example.propertiesinformationcollector.model.PropertiesServices;
 import com.example.propertiesinformationcollector.model.Services;
 import com.example.propertiesinformationcollector.model.Task;
 
@@ -24,26 +24,19 @@ public interface TaskStorage {
 	 *
 	 * @return Задача
 	 */
-	Task read(UUID uuid);
+	Task getByUuid(UUID uuid);
 
 	/**
 	 * Обновить Properties задачи по uuid
 	 *
 	 * @param uuid uuid задачи
-	 *
-	 * @return Обновлённая задача
 	 */
-	Task update(UUID uuid, Properties properties);
+	void updateByUuid(UUID uuid, PropertiesServices propertiesServices);
 
 	/**
-	 * Удалить задачу по uuid
+	 * Найти первую задачу в очереди, которую нужно выполнить
 	 *
-	 * @param uuid uuid задачи
+	 * @return первую задачу в очереди
 	 */
-	void delete(UUID uuid);
-
-	/**
-	 * Получить задачу, которую нужно выполнить
-	 */
-	Task getObjectInProgress();
+	Task findFirstTaskInProgress();
 }
