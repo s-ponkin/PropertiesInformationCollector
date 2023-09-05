@@ -1,6 +1,6 @@
 package com.example.propertiesinformationcollector.jobs;
 
-import com.example.propertiesinformationcollector.model.PropertiesServices;
+import com.example.propertiesinformationcollector.model.PropertyInfo;
 import com.example.propertiesinformationcollector.model.Task;
 import com.example.propertiesinformationcollector.service.PropertiesService;
 import com.example.propertiesinformationcollector.service.TaskStorage;
@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Configuration
@@ -28,8 +30,8 @@ public class ScheduleTask {
 	public void startingProcessAsync() {
 		Task task = taskStorage.findFirstTaskInProgress();
 		if (task != null) {
-			PropertiesServices propertiesServices = propertiesService.getPropertiesServices(task.getServices());
-			taskStorage.updateByUuid(task.getUuid(),propertiesServices);
+			List<List<PropertyInfo>> propertiesServicesList = propertiesService.collectPropertiesServices(task.getServices());
+			taskStorage.updateByUuid(task.getUuid(),propertiesServicesList);
 		}
 	}
 }

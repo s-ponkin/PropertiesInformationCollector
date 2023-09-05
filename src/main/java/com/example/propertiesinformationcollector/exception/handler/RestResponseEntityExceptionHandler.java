@@ -1,6 +1,10 @@
 package com.example.propertiesinformationcollector.exception.handler;
 
+import com.example.propertiesinformationcollector.exception.handler.exceptions.TaskNotBeenCompletedException;
+import com.example.propertiesinformationcollector.exception.handler.exceptions.TaskNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -8,7 +12,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(TaskNotFoundException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	protected ErrorBody handleProductNotFoundException(TaskNotFoundException exception) {
+		return new ErrorBody(exception.getMessage());
+	}
+
+	@ExceptionHandler(TaskNotBeenCompletedException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	protected ErrorBody handleProductNotFoundException(TaskNotBeenCompletedException exception) {
 		return new ErrorBody(exception.getMessage());
 	}
 }

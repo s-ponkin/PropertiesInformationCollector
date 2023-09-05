@@ -1,9 +1,10 @@
 package com.example.propertiesinformationcollector.service;
 
-import com.example.propertiesinformationcollector.model.PropertiesServices;
-import com.example.propertiesinformationcollector.model.Services;
+import com.example.propertiesinformationcollector.model.InfoAboutPropertiesInServices;
+import com.example.propertiesinformationcollector.model.PropertyInfo;
 import com.example.propertiesinformationcollector.model.Task;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface TaskStorage {
@@ -15,7 +16,7 @@ public interface TaskStorage {
 	 *
 	 * @return идентификатор задачи
 	 */
-	Task create(Services services);
+	Task create(InfoAboutPropertiesInServices services);
 
 	/**
 	 * Получить задачу по uuid
@@ -31,7 +32,7 @@ public interface TaskStorage {
 	 *
 	 * @param uuid uuid задачи
 	 */
-	void updateByUuid(UUID uuid, PropertiesServices propertiesServices);
+	void updateByUuid(UUID uuid, List<List<PropertyInfo>> propertiesServices);
 
 	/**
 	 * Найти первую задачу в очереди, которую нужно выполнить

@@ -1,10 +1,11 @@
 package com.example.propertiesinformationcollector.model;
 
-import com.example.propertiesinformationcollector.enumStatus.StatusTask;
+import com.example.propertiesinformationcollector.enums.StatusTask;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 @Data
 @Builder
@@ -23,12 +24,12 @@ public class Task {
 	/**
 	 * Информация о сервисах задачи
 	 */
-	private Services services;
+	private InfoAboutPropertiesInServices services;
 
 	/**
 	 * Результат работы программы
 	 */
-	private PropertiesServices propertiesServices;
+	private List<List<PropertyInfo>> propertiesServicesList;
 
 	/**
 	 * Дата создания задачи

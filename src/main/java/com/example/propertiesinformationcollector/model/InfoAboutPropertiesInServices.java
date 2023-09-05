@@ -1,26 +1,23 @@
 package com.example.propertiesinformationcollector.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Value
 @Builder
-public class Services {
-
+public class InfoAboutPropertiesInServices {
 	/**
 	 * Список сервисов
 	 */
-	private List<Service> services;
+	List<ServiceInfo> services;
 
 	/**
 	 * Список игнорируемых property
 	 */
-	private List<String> ignorePropertiesList;
+	List<String> ignorePropertiesList;
+
 }

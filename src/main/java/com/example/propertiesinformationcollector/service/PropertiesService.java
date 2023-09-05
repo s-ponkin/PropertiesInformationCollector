@@ -1,7 +1,9 @@
 package com.example.propertiesinformationcollector.service;
 
-import com.example.propertiesinformationcollector.model.PropertiesServices;
-import com.example.propertiesinformationcollector.model.Services;
+import com.example.propertiesinformationcollector.model.InfoAboutPropertiesInServices;
+import com.example.propertiesinformationcollector.model.PropertyInfo;
+
+import java.util.List;
 
 public interface PropertiesService {
 
@@ -12,6 +14,6 @@ public interface PropertiesService {
 	 *
 	 * @return идентификатор задачи
 	 */
-	PropertiesServices getPropertiesServices(Services services);
+	List<List<PropertyInfo>> collectPropertiesServices(InfoAboutPropertiesInServices services);
 
 }

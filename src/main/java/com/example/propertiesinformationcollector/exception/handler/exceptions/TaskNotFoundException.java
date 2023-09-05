@@ -1,4 +1,4 @@
-package com.example.propertiesinformationcollector.exception.handler;
+package com.example.propertiesinformationcollector.exception.handler.exceptions;
 
 import java.util.UUID;
 
