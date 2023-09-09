@@ -8,12 +8,12 @@ import java.util.List;
 public interface PropertiesService {
 
 	/**
-	 * Возвращает properties всех services
+	 * Возвращает properties всех сервисов
 	 *
-	 * @param services oбъект с информацией о файлах с property
+	 * @param infoAboutPropertiesInServices oбъект с информацией о файлах с property
 	 *
-	 * @return идентификатор задачи
+	 * @return Список списков с информацией о проперти всех сервисов
 	 */
-	List<List<PropertyInfo>> collectPropertiesServices(InfoAboutPropertiesInServices services);
+	List<List<PropertyInfo>> collectPropertiesServices(InfoAboutPropertiesInServices infoAboutPropertiesInServices);
 
 }

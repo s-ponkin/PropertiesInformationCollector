@@ -27,7 +27,7 @@ public class Task {
 	private InfoAboutPropertiesInServices services;
 
 	/**
-	 * Результат работы программы
+	 * Список списков с информацией о всех проперти
 	 */
 	private List<List<PropertyInfo>> propertiesServicesList;
 

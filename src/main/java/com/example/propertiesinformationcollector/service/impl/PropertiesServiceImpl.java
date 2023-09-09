@@ -1,7 +1,5 @@
 package com.example.propertiesinformationcollector.service.impl;
 
-import com.example.propertiesinformationcollector.model.dto.GetPropertiesFromServicesDto.Property;
-import com.example.propertiesinformationcollector.model.dto.GetPropertiesFromServicesDto.Property.ServicesValue;
 import com.example.propertiesinformationcollector.model.InfoAboutPropertiesInServices;
 import com.example.propertiesinformationcollector.model.PropertyInfo;
 import com.example.propertiesinformationcollector.model.ServiceInfo;
@@ -11,58 +9,47 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RequiredArgsConstructor
 @Service
 public class PropertiesServiceImpl implements PropertiesService {
 
 	private final PropertyCollector propertyCollector;
+	private static final Logger logger = Logger.getLogger(PropertiesServiceImpl.class.getName());
 
 	@Override
 	public List<List<PropertyInfo>> collectPropertiesServices(InfoAboutPropertiesInServices services) {
 		List<List<PropertyInfo>> allListWithPropertyList = new ArrayList<>();
+		List<Callable<List<PropertyInfo>>> callableTasks = new ArrayList<>();
+
 		for (ServiceInfo info: services.getServices()) {
-			allListWithPropertyList.add(propertyCollector.collectPropertyFromService(info));
+			Callable<List<PropertyInfo>> callableTask =
+				() -> propertyCollector.collectPropertyFromService(info);
+			callableTasks.add(callableTask);
+		}
+
+		ExecutorService service = Executors.newSingleThreadExecutor();
+		List<Future<List<PropertyInfo>>> resultListFuture;
+		try {
+			resultListFuture = service.invokeAll(callableTasks);
+		} catch (InterruptedException e) {
+			logger.log(Level.WARNING, e.getMessage());
+			throw new RuntimeException(e);
+		}
+		service.shutdown();
+
+		for (Future<List<PropertyInfo>> info: resultListFuture) {
+			if(info.isDone()){
+				try {
+					allListWithPropertyList.add(info.get());
+				} catch (InterruptedException | ExecutionException e) {
+					logger.log(Level.WARNING, e.getMessage());
+				}
+			}
 		}
 		return allListWithPropertyList;
-	}
-
-	private static List<Property> getUniquePropertiesOfEachServiceWithValue(List<Map<String, ServicesValue>> propertiesServicesMapsList, Set<String> uniquePropertyNames){
-		List<Property> propertyList = new ArrayList<>();
-
-		for (String nameProperty : uniquePropertyNames) {
-			Property property = Property.builder()
-				.name(nameProperty)
-				.build();
-			List<ServicesValue> servicesValueList = new ArrayList<>();
-
-			for (Map<String, ServicesValue> mapsProperty : propertiesServicesMapsList) {
-				if (mapsProperty.containsKey(nameProperty)) {
-					ServicesValue servicesValue = mapsProperty.get(nameProperty);
-					servicesValueList.add(servicesValue);
-				}
-			}
-			property.setServicesValueList(servicesValueList);
-
-			boolean equal = true;
-			String value = servicesValueList.get(0).getValue();
-			for (ServicesValue servicesValue : servicesValueList) {
-				if (!value.equals(servicesValue.getValue())) {
-					equal = false;
-					break;
-				}
-			}
-			property.setAllValuesEqual(equal);
-			propertyList.add(property);
-		}
-		return propertyList;
-	}
-
-	private static Set<String> getUniquePropertyNames(List<Map<String, ServicesValue>> mapList) {
-		Set<String> uniquePropertyNames = new HashSet<>();
-		for (Map<String, ServicesValue> stringPropertyInfoMap : mapList) {
-			uniquePropertyNames.addAll(stringPropertyInfoMap.keySet());
-		}
-		return uniquePropertyNames;
 	}
 }

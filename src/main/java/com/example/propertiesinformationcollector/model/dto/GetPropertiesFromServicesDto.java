@@ -29,7 +29,7 @@ public class GetPropertiesFromServicesDto {
 		/**
 		 * Список объектов с информацией о property
 		 */
-		List<ServicesValue> servicesValueList;
+		List<ServicesValue> servicesValue;
 
 		/**
 		 * Результат сравнения значений всех сервисов в property
@@ -48,7 +48,7 @@ public class GetPropertiesFromServicesDto {
 			/**
 			 * Имя сервиса
 			 */
-			String serviceName;
+			String service;
 
 			/**
 			 * Значение property

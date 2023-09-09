@@ -16,12 +16,12 @@ public class TaskStorageImpl implements TaskStorage {
 	public static final Map<UUID, Task> taskMap = new HashMap<>();
 
 	@Override
-	public Task create(InfoAboutPropertiesInServices services) {
+	public Task create(InfoAboutPropertiesInServices infoAboutPropertiesInServices) {
 		UUID uuid = UUID.randomUUID();
 		Task task = Task.builder()
 			.uuid(uuid)
 			.statusTask(StatusTask.IN_PROGRESS)
-			.services(services)
+			.services(infoAboutPropertiesInServices)
 			.dateOfCreation(new Date())
 			.build();
 		taskMap.put(uuid, task);
@@ -37,7 +37,7 @@ public class TaskStorageImpl implements TaskStorage {
 	}
 
 	@Override
-	public void updateByUuid(UUID uuid, List<List<PropertyInfo>> propertiesServicesList) {
+	public Task updateByUuid(UUID uuid, List<List<PropertyInfo>> propertiesServicesList) {
 		if(!taskMap.containsKey(uuid)){
 			throw TaskNotFoundException.byUuid(uuid);
 		}
@@ -48,6 +48,7 @@ public class TaskStorageImpl implements TaskStorage {
 				.build();
 		taskMap.put(uuid, task);
 		System.out.println(taskMap);
+		return task;
 	}
 
 	@Override

@@ -31,8 +31,11 @@ public interface TaskStorage {
 	 * Обновить Properties задачи по uuid
 	 *
 	 * @param uuid uuid задачи
+	 * @param allListWithPropertyList Список списков с информацией о всех проперти
+	 *
+	 * @return обновлённую задачу
 	 */
-	void updateByUuid(UUID uuid, List<List<PropertyInfo>> propertiesServices);
+	Task updateByUuid(UUID uuid, List<List<PropertyInfo>> allListWithPropertyList);
 
 	/**
 	 * Найти первую задачу в очереди, которую нужно выполнить

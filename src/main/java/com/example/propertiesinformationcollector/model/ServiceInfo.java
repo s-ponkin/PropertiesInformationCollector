@@ -7,7 +7,13 @@ import lombok.Value;
 @Value
 public class ServiceInfo {
 
+	/**
+	 * Имя сервиса
+	 */
 	String name;
 
+	/**
+	 * Путь до файла с проперти сервиса
+	 */
 	String pathToProperties;
 }

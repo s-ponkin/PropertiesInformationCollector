@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 public class CreateTaskCollectPropertiesFromServicesRequestDtoToInfoAboutPropertiesInServices implements Converter<CreateTaskCollectPropertiesFromServicesRequestDto, InfoAboutPropertiesInServices> {
 
-	private final ConversionService conversionService;
+	private final CreateTaskCollectPropertiesFromServicesRequestServicesDtoToServiceInfo createTaskCollectPropertiesFromServicesRequestServicesDtoToServiceInfo;
 
 	@Override
 	public InfoAboutPropertiesInServices convert(CreateTaskCollectPropertiesFromServicesRequestDto source) {
 		List<ServiceInfo> infoAboutLocationOfFileWithPropertyList = new ArrayList<>();
 		for (CreateTaskCollectPropertiesFromServicesRequestServicesDto element :source.getServices()) {
-			infoAboutLocationOfFileWithPropertyList.add(conversionService.convert(element, ServiceInfo.class));
+			infoAboutLocationOfFileWithPropertyList.add(createTaskCollectPropertiesFromServicesRequestServicesDtoToServiceInfo.convert(element));
 		}
 		return InfoAboutPropertiesInServices.builder()
 			.services(infoAboutLocationOfFileWithPropertyList)

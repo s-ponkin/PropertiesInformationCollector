@@ -22,8 +22,8 @@ public class TaskController {
 	private final ConversionService conversionService;
 
 	@PostMapping
-	public UUID createTask(@RequestBody CreateTaskCollectPropertiesFromServicesRequestDto services) {
-		InfoAboutPropertiesInServices info = conversionService.convert(services, InfoAboutPropertiesInServices.class);
+	public UUID createTask(@RequestBody CreateTaskCollectPropertiesFromServicesRequestDto dto) {
+		InfoAboutPropertiesInServices info = conversionService.convert(dto, InfoAboutPropertiesInServices.class);
 		Task task = taskStorage.create(info);
 		return task.getUuid();
 	}
@@ -41,7 +41,6 @@ public class TaskController {
 		if(task.getStatusTask() == StatusTask.IN_PROGRESS){
 			throw TaskNotBeenCompletedException.getMes();
 		}
-//		return task.getPropertiesServicesList();
-		return null;
+		return conversionService.convert(task.getPropertiesServicesList(), GetPropertiesFromServicesDto.class);
 	}
 }
